@@ -3,14 +3,9 @@
 <head>
 	<script src="airtable.browser.js"></script>
 	<script src="https://static.airtable.com/js/embed/embed_snippet_v1.js"></script>
-	<!-- <script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jquery/1.6.0/jquery.min.js"></script> -->
 	<script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
 	<link rel="stylesheet" href="https://ajax.googleapis.com/ajax/libs/jqueryui/1.12.1/themes/smoothness/jquery-ui.css">
 	<script src="https://ajax.googleapis.com/ajax/libs/jqueryui/1.12.1/jquery-ui.min.js"></script>
-
-	<!-- <script type="text/javascript" src="bike_project_navigator.js"></script> -->
-	<!-- <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.1/jquery.min.js"></script> -->
-
 	<style>
 		.selected {
 		    color: black;
@@ -21,10 +16,41 @@
 		.title {
 		    font-weight: bold;
 		}
+		#overlay {
+			position: fixed; /* Sit on top of the page content */
+			display: none; /* Hidden by default */
+			width: 100%; /* Full width (cover the whole page) */
+			height: 100%; /* Full height (cover the whole page) */
+			top: 0;
+			left: 0;
+			right: 0;
+			bottom: 0;
+			background-color: rgba(0,0,0,0.75); /* Black background with opacity */
+			z-index: 2; /* Specify a stack order in case you're using a different order for other elements */
+			cursor: pointer; /* Add a pointer on hover */
+  			align-items: center
+
+		}
+		#overlayText {
+			background-color: white;
+			width: 75%; /* Full width (cover the whole page) */
+			height: 75%; /* Full height (cover the whole page) */
+ 			margin-left: auto;
+    		margin-right: auto;
+    		font-size: 2vw;
+    		padding: 50px;
+
+
+		}
 	</style>
 </head>
 
 <body>
+	<div style="font-size: 3vw">
+		<a class="title"> Bike project navigator</a>
+	</div>	
+	<button onclick="overlayOn()">What is this?</button>
+	</br></br>
 	<div style="font-size: 2vw">
 		<a class="title"> Outcome: </a> </br>
 		Establish bicycling as a safe and common transportation method in the United States
@@ -46,17 +72,30 @@
 		</span>
 	</div>
 	
- <div id="accordion" style="width: 50%; height: 500px; ">
-            <h3>Add a new effort</h3>
-            <div style="width: 100%; height: 500px;">
-                <iframe name="I1" id="I1" data-src="https://airtable.com/embed/shrkkmCJlmRWY3drd?backgroundColor=white" frameborder="0"  width="100%" height="100%" scrolling="no">
-                </iframe>   
-            </div>
-            <h3>Add a new story/article</h3>
-            <div style="width: 100%; height: 500px;">
-                <iframe name="I2" id="I2" data-src="https://airtable.com/embed/shrQb3TwZJ2dWlCH9?backgroundColor=white" frameborder="0" width="100%" height="100%" scrolling="no"></iframe> 
-            </div>
-        </div>
+	<div id="accordion" style="width: 50%; height: 500px; ">
+		<h3>Add a new effort</h3>
+		<div style="width: 100%; height: 500px;">
+		    <iframe name="I1" id="I1" data-src="https://airtable.com/embed/shrkkmCJlmRWY3drd?backgroundColor=white" frameborder="0"  width="100%" height="100%" scrolling="no">
+		    </iframe>   
+		</div>
+		<h3>Add a new story/article</h3>
+		<div style="width: 100%; height: 500px;">
+		    <iframe name="I2" id="I2" data-src="https://airtable.com/embed/shrQb3TwZJ2dWlCH9?backgroundColor=white" frameborder="0" width="100%" height="100%" scrolling="no"></iframe> 
+		</div>
+		<h3>Submit feedback</h3>
+		<div style="width: 100%; height: 500px;">
+		    <iframe name="I3" id="I3" data-src="https://airtable.com/embed/shrE3wdlYAJnBaMw7?backgroundColor=white" frameborder="0" width="100%" height="100%" scrolling="no"></iframe> 
+		</div>
+	 </div>
+
+	<div id="overlay" onclick="overlayOff()">
+		<div id="overlayText">
+		This tool is my attempt to understand and sort the landscape of people, organizations and businesses who are working to increase bicycle ridership in the US. I hope you will find it useful, and that you might provide feedback and input to make it better.
+		</br> </br>
+		I've sorted work into high-level categories called "Strategies", followed by more specific categories called "Approaches". When you click on each, you will see a "zoomed in" view of the specific efforts that are being done, and related media coverage. If the way I have organized information doesn't feel quite right, please fill out the feedback form to let me know!
+		</div>
+	</div>
+	
 
 	<div style="  height:30px;  padding:5px; bottom:0px;">
 		Created by Scott Owades.
@@ -210,6 +249,14 @@ $(function() {
         
     });  
 }); 
+
+function overlayOn() {
+  document.getElementById("overlay").style.display = "flex";
+}
+
+function overlayOff() {
+  document.getElementById("overlay").style.display = "none";
+}
 
 </script>
 </html>

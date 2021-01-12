@@ -73,6 +73,11 @@
 	</div>
 	
 	<div id="accordion" style="width: 50%; height: 500px; ">
+		<h3>Add a new approach</h3>
+		<div style="width: 100%; height: 500px;">
+		    <iframe name="I0" id="I0" data-src="https://airtable.com/embed/shrQsdxfpAGqDMzpl?backgroundColor=white" frameborder="0"  width="100%" height="100%" scrolling="no">
+		    </iframe>   
+		</div>
 		<h3>Add a new effort</h3>
 		<div style="width: 100%; height: 500px;">
 		    <iframe name="I1" id="I1" data-src="https://airtable.com/embed/shrkkmCJlmRWY3drd?backgroundColor=white" frameborder="0"  width="100%" height="100%" scrolling="no">
@@ -87,6 +92,7 @@
 		    <iframe name="I3" id="I3" data-src="https://airtable.com/embed/shrE3wdlYAJnBaMw7?backgroundColor=white" frameborder="0" width="100%" height="100%" scrolling="no"></iframe> 
 		</div>
 	 </div>
+
 
 	<div id="overlay" onclick="overlayOff()">
 		<div id="overlayText">
@@ -228,8 +234,10 @@ function showIframe(panel){
 
 $(function() {
     //I believe these two functions will load all
-	showIframe( $('#accordion div').eq(0)  );
-	showIframe( $('#accordion div').eq(1)  );
+	showIframe( $('#accordion div').eq(0) );
+	showIframe( $('#accordion div').eq(1) );
+	showIframe( $('#accordion div').eq(2) );
+	showIframe( $('#accordion div').eq(3) );
 	
     $( "#accordion" ).accordion({     
         collapsible: true,

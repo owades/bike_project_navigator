@@ -41,8 +41,10 @@
 			</ul>
 		</span>
 	</div>
-	<button id="showEffortForm">Add a new effort</button>
-	<div id='iframeHolder'> <iframe id='iframe1' class="airtable-embed airtable-dynamic-height" src="https://airtable.com/embed/shrkkmCJlmRWY3drd?backgroundColor=gray" frameborder="0" onmousewheel="" width="50%"  style="background: transparent; border: 1px solid #ccc;"></iframe></div>
+	<button id="effortFormButton" onclick="showEffortForm()">Add a new effort</button>
+	<button id="mediaFormButton" onclick="showMediaForm()">Add a new story/article</button>
+	<iframe id='effortForm' class="airtable-embed airtable-dynamic-height" src="https://airtable.com/embed/shrkkmCJlmRWY3drd?backgroundColor=gray" frameborder="0" onmousewheel="" width="50%"  style="background: transparent; border: 1px solid #ccc; display: none;" ></iframe>
+	<iframe id='mediaForm' class="airtable-embed airtable-dynamic-height" src="https://airtable.com/embed/shrQb3TwZJ2dWlCH9?backgroundColor=gray" frameborder="0" onmousewheel="" width="50%"  style="background: transparent; border: 1px solid #ccc; display: none;" ></iframe>
 	<div style="  height:30px;  padding:5px; bottom:0px;"">
 		Created by Scott Owades.
 		<a href="https://airtable.com/shrK4deyUvmUA9rcJ">Source data </a>
@@ -165,27 +167,29 @@ function createTitle(title,list) {
     document.getElementById(list).appendChild(listPart);
 }
 
-$(function(){
-	// console.log("initial lenght: " + $('#iframeHolder').html.length)
-    $('#showEffortForm').click(function(){ 
-		$('iframe1').toggle(1000) 
-		})
-    // 	// console.log($('#iframeHolder').html.length)
-    //     if ($('#iframeHolder').html.length  == 1 ) {
-    //             $('#iframeHolder').html('<iframe class="airtable-embed airtable-dynamic-height" src="https://airtable.com/embed/shrkkmCJlmRWY3drd?backgroundColor=gray" frameborder="0" onmousewheel="" width="50%"  style="background: transparent; border: 1px solid #ccc;"></iframe>');
-    //     console.log("lenght after adding: " + $('#iframeHolder').html.length())
-    //     // delete ('#iframeHolder').html
-    //     // console.log($('#iframeHolder').length);
-    //     }
+// try this example for better effects: http://jsfiddle.net/B4JGe/
+function showEffortForm() {
+	var x = document.getElementById("effortForm");
+	var y = document.getElementById("effortFormButton");
+	if (x.style.display === "none") {
+	x.style.display = "block";
+	y.innerHTML = "Hide new effort form"
+	} else {
+	x.style.display = "none";
+	y.innerHTML = "Add a new effort"
+	}
+}
 
-    //     else {
-    //     	$('#iframeHolder').html('')
-        
- 
-});
-
-
-
-
+function showMediaForm() {
+	var x = document.getElementById("mediaForm");
+	var y = document.getElementById("mediaFormButton");
+	if (x.style.display === "none") {
+	x.style.display = "block";
+	y.innerHTML = "Hide new story/article form"
+	} else {
+	x.style.display = "none";
+	y.innerHTML = "Add a new story/article"
+	}
+}
 </script>
 </html>

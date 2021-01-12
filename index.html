@@ -3,7 +3,11 @@
 <head>
 	<script src="airtable.browser.js"></script>
 	<script src="https://static.airtable.com/js/embed/embed_snippet_v1.js"></script>
-	<script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jquery/1.6.0/jquery.min.js"></script>
+	<!-- <script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jquery/1.6.0/jquery.min.js"></script> -->
+	<script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+	<link rel="stylesheet" href="https://ajax.googleapis.com/ajax/libs/jqueryui/1.12.1/themes/smoothness/jquery-ui.css">
+	<script src="https://ajax.googleapis.com/ajax/libs/jqueryui/1.12.1/jquery-ui.min.js"></script>
+
 	<!-- <script type="text/javascript" src="bike_project_navigator.js"></script> -->
 	<!-- <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.1/jquery.min.js"></script> -->
 
@@ -41,13 +45,22 @@
 			</ul>
 		</span>
 	</div>
-	<button id="effortFormButton" onclick="showEffortForm()">Add a new effort</button>
-	<button id="mediaFormButton" onclick="showMediaForm()">Add a new story/article</button>
-	<iframe id='effortForm' class="airtable-embed airtable-dynamic-height" src="https://airtable.com/embed/shrkkmCJlmRWY3drd?backgroundColor=gray" frameborder="0" onmousewheel="" width="50%"  style="background: transparent; border: 1px solid #ccc; display: none;" ></iframe>
-	<iframe id='mediaForm' class="airtable-embed airtable-dynamic-height" src="https://airtable.com/embed/shrQb3TwZJ2dWlCH9?backgroundColor=gray" frameborder="0" onmousewheel="" width="50%"  style="background: transparent; border: 1px solid #ccc; display: none;" ></iframe>
-	<div style="  height:30px;  padding:5px; bottom:0px;"">
+	
+ <div id="accordion" style="width: 50%; height: 500px; ">
+            <h3>Add a new effort</h3>
+            <div style="width: 100%; height: 500px;">
+                <iframe name="I1" id="I1" data-src="https://airtable.com/embed/shrkkmCJlmRWY3drd?backgroundColor=gray" frameborder="0"  width="100%" height="100%" scrolling="no">
+                </iframe>   
+            </div>
+            <h3>Add a new story/article</h3>
+            <div style="width: 100%; height: 500px;">
+                <iframe name="I2" id="I2" data-src="https://airtable.com/embed/shrQb3TwZJ2dWlCH9?backgroundColor=gray" frameborder="0" width="100%" height="100%" scrolling="no"></iframe> 
+            </div>
+        </div>
+
+	<div style="  height:30px;  padding:5px; bottom:0px;">
 		Created by Scott Owades.
-		<a href="https://airtable.com/shrK4deyUvmUA9rcJ">Source data </a>
+		<a href="https://airtable.com/shrK4deyUvmUA9rcJ"> Source data (via Airtable) </a>
 
 	</div>
 </body>
@@ -167,29 +180,36 @@ function createTitle(title,list) {
     document.getElementById(list).appendChild(listPart);
 }
 
-// try this example for better effects: http://jsfiddle.net/B4JGe/
-function showEffortForm() {
-	var x = document.getElementById("effortForm");
-	var y = document.getElementById("effortFormButton");
-	if (x.style.display === "none") {
-	x.style.display = "block";
-	y.innerHTML = "Hide new effort form"
-	} else {
-	x.style.display = "none";
-	y.innerHTML = "Add a new effort"
-	}
-}
+function showIframe(panel){		
+	$('iframe', panel).each(function(){
+		var iframe = $(this);
+	    if(  iframe.attr('src')==undefined ) iframe.attr('src', iframe.data('src') );
+	});
+};
 
-function showMediaForm() {
-	var x = document.getElementById("mediaForm");
-	var y = document.getElementById("mediaFormButton");
-	if (x.style.display === "none") {
-	x.style.display = "block";
-	y.innerHTML = "Hide new story/article form"
-	} else {
-	x.style.display = "none";
-	y.innerHTML = "Add a new story/article"
-	}
-}
+$(function() {
+    //I believe these two functions will load all
+	showIframe( $('#accordion div').eq(0)  );
+	showIframe( $('#accordion div').eq(1)  );
+	
+    $( "#accordion" ).accordion({     
+        collapsible: true,
+        heightStyle: "content",
+        active: false,
+        animate: {        
+            duration: 200,        
+            down: {            
+                easing: "easeOutBounce",            
+                duration: 1000        
+            }    
+            
+        },
+         beforeActivate: function( event, ui ) {
+         		showIframe(ui.newPanel);
+         } 
+        
+    });  
+}); 
+
 </script>
 </html>

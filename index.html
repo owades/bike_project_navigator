@@ -2,6 +2,8 @@
 <html>
 <head>
 	<script src="airtable.browser.js"></script>
+	<script src="https://static.airtable.com/js/embed/embed_snippet_v1.js"></script>
+	<script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jquery/1.6.0/jquery.min.js"></script>
 	<!-- <script type="text/javascript" src="bike_project_navigator.js"></script> -->
 	<!-- <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.1/jquery.min.js"></script> -->
 
@@ -39,7 +41,9 @@
 			</ul>
 		</span>
 	</div>
-	<div style="position:fixed;  height:30px;  padding:5px; bottom:0px;"">
+	<button id="showEffortForm">Add a new effort</button>
+	<div id='iframeHolder'> <iframe id='iframe1' class="airtable-embed airtable-dynamic-height" src="https://airtable.com/embed/shrkkmCJlmRWY3drd?backgroundColor=gray" frameborder="0" onmousewheel="" width="50%"  style="background: transparent; border: 1px solid #ccc;"></iframe></div>
+	<div style="  height:30px;  padding:5px; bottom:0px;"">
 		Created by Scott Owades.
 		<a href="https://airtable.com/shrK4deyUvmUA9rcJ">Source data </a>
 
@@ -80,7 +84,7 @@ function showHows(what) {
     document.getElementById("howList").textContent = ''
     document.getElementById("effortList").textContent = ''
     document.getElementById("mediaList").textContent = ''
-    var filterFormula = "{What} = '" + what + "'"
+    var filterFormula = "AND( {What} = '" + what + "', {Reviewed} = 'Yes')"
     base('How').select({
         view: 'Grid view',
         filterByFormula: filterFormula
@@ -112,7 +116,7 @@ function showHows(what) {
 
 function showEfforts(how) {
     document.getElementById("effortList").textContent = ''
-    var filterFormula = "SEARCH('"+ how + "',{How}) >0"
+    var filterFormula = "AND(SEARCH('"+ how + "',{How}) > 0, {Reviewed} = 'Yes')"
     base('Efforts').select({
         view: 'Grid view',
         filterByFormula: filterFormula
@@ -133,7 +137,7 @@ function showEfforts(how) {
 }
 function showMedia(how) {
     document.getElementById("mediaList").textContent = ''
-    var filterFormula = "SEARCH('"+ how + "',{How}) >0"
+    var filterFormula = "AND( SEARCH('"+ how + "',{How}) > 0, {Reviewed} = 'Yes')"
     base('Media').select({
         view: 'Grid view',
         filterByFormula: filterFormula
@@ -160,6 +164,27 @@ function createTitle(title,list) {
     listPart.classList.add('title');
     document.getElementById(list).appendChild(listPart);
 }
+
+$(function(){
+	// console.log("initial lenght: " + $('#iframeHolder').html.length)
+    $('#showEffortForm').click(function(){ 
+		$('iframe1').toggle(1000) 
+		})
+    // 	// console.log($('#iframeHolder').html.length)
+    //     if ($('#iframeHolder').html.length  == 1 ) {
+    //             $('#iframeHolder').html('<iframe class="airtable-embed airtable-dynamic-height" src="https://airtable.com/embed/shrkkmCJlmRWY3drd?backgroundColor=gray" frameborder="0" onmousewheel="" width="50%"  style="background: transparent; border: 1px solid #ccc;"></iframe>');
+    //     console.log("lenght after adding: " + $('#iframeHolder').html.length())
+    //     // delete ('#iframeHolder').html
+    //     // console.log($('#iframeHolder').length);
+    //     }
+
+    //     else {
+    //     	$('#iframeHolder').html('')
+        
+ 
+});
+
+
 
 
 </script>

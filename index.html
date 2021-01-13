@@ -33,11 +33,11 @@
 		}
 		#overlayText {
 			background-color: white;
-			width: 50%; /* Full width (cover the whole page) */
-			height: 30%; /* Full height (cover the whole page) */
+			width: 60%; /* Full width (cover the whole page) */
+			height: 60%; /* Full height (cover the whole page) */
  			margin-left: auto;
     		margin-right: auto;
-    		font-size: 1vw;
+    		font-size: 2vw;
     		padding: 50px;
 		}
 	</style>
@@ -63,9 +63,9 @@
 	</div>
 	<div>
 		<span>
-			<ul id="effortList"  style="list-style-type: none; display: inline-block; font-size: 1vw; vertical-align: top;"> 
+			<ul id="effortList"  style="list-style-type: none; display: inline-block; font-size: 2vw; vertical-align: top;"> 
 			</ul>
-			<ul id="mediaList"  style="list-style-type: none; display: inline-block; font-size: 1vw; vertical-align: top;"> 
+			<ul id="mediaList"  style="list-style-type: none; display: inline-block; font-size: 2vw; vertical-align: top;"> 
 			</ul>
 		</span>
 	</div>
@@ -123,12 +123,7 @@ base('What').select({
         listPart.onclick = function() {
             return function(){
                 showHows(what);
-                const selectedElement = this.parentElement.getElementsByClassName('selected')
-                const notSelectedElements = this.parentElement.children
-                Array.from(selectedElement).forEach(item => item.classList.remove('selected')) 
-                Array.from(notSelectedElements).forEach(item => item.classList.add('notSelected'))  
-                this.classList.remove('notSelected');
-                this.classList.add('selected');
+                toggleSelection(this);
             }
         }(what);
         var textNode = document.createTextNode(what);
@@ -156,12 +151,7 @@ function showHows(what) {
                 return function(){
                     showEfforts(how);
                     showMedia(how);
-                    const selectedElement = this.parentElement.getElementsByClassName('selected')
-                    const notSelectedElements = this.parentElement.children
-                    Array.from(selectedElement).forEach(item => item.classList.remove('selected')) 
-                    Array.from(notSelectedElements).forEach(item => item.classList.add('notSelected'))  
-                    this.classList.remove('notSelected');
-                    this.classList.add('selected');
+                    toggleSelection(this);
                 }
             }(how);
             var textNode = document.createTextNode(how);
@@ -220,6 +210,21 @@ function createTitle(title,list) {
     listPart.appendChild(textNode);
     listPart.classList.add('title');
     document.getElementById(list).appendChild(listPart);
+}
+
+function toggleSelection(listItem) {
+	// selectedElement contains all items that have previously been selected (should always be none or one)
+	const selectedElement = listItem.parentElement.getElementsByClassName('selected')
+	// notSelectedelements contains all list items
+	const notSelectedElements = listItem.parentElement.children
+	// remove "selected" class from all list items
+	Array.from(selectedElement).forEach(item => item.classList.remove('selected')) 
+	// add "notSelected" class to all list items
+	Array.from(notSelectedElements).forEach(item => item.classList.add('notSelected'))  
+	// remove "notSelected" class from the clicked item
+	listItem.classList.remove('notSelected');
+	// add "selected" class to the clicked item
+	listItem.classList.add('selected');
 }
 
 function showIframe(panel){		

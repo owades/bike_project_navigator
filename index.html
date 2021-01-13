@@ -17,6 +17,9 @@
 		    font-weight: bold;
 		    color: black;
 		}
+		.filler {
+		    font-style: italic;
+		}
 		#overlay {
 			position: fixed; /* Sit on top of the page content */
 			display: none; /* Hidden by default */
@@ -38,39 +41,67 @@
 			height: 60%; /* Full height (cover the whole page) */
  			margin-left: auto;
     		margin-right: auto;
-    		font-size: 2vw;
+    		font-size: 2rem;
     		padding: 50px;
+		}
+
+		.top {
+			/* Grid styles */
+			/*display: grid;
+			align-items: center;
+			grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));*/
+		}
+		/* main grid styles */
+		.mainGrid {
+		  /*padding: 2rem;*/
+  		  display: grid;
+		  grid-template-columns: repeat(2, minmax(0, 1fr));
+		  /*grid-gap: 1rem;*/
+		}
+
+		.mainGrid > ul {
+			text-align: center;
+			list-style-type: none;
+			display: inline-block; 
+			font-size: 2rem;
+			vertical-align: top;
+
+		}
+		.mainGrid > ul > li {
+			
+			text-align: left;
+		}
+		iframe {
+
 		}
 	</style>
 </head>
 
 <body>
-	<div style="font-size: 3vw">
-		<a class="title"> Bike project navigator</a>
-	</div>	
-	<button onclick="overlayOn()">What is this?</button>
-	</br></br>
-	<div style="font-size: 2vw">
-		<a class="title"> Outcome: </a> </br>
-		Establish bicycling as a safe and common transportation method in the United States
-	</div>
-	<div>
-		<span>
-			<ul id="whatList"  style="list-style-type: none; display: inline-block;  font-size: 2vw; vertical-align: top;"> 
-			</ul>
-			<ul id="howList"  style="list-style-type: none; display: inline-block; font-size: 2vw; vertical-align: top;"> 
-			</ul>
-		</span>
-	</div>
-	<div>
-		<span>
-			<ul id="effortList"  style="list-style-type: none; display: inline-block; font-size: 2vw; vertical-align: top;"> 
-			</ul>
-			<ul id="mediaList"  style="list-style-type: none; display: inline-block; font-size: 2vw; vertical-align: top;"> 
-			</ul>
-		</span>
-	</div>
-	
+	<section class="top">
+		<div style="font-size: 2rem">
+			<a class="title"> Bike project navigator</a>
+		</div>	
+		<button onclick="overlayOn()">What is this?</button>
+		<div style="font-size: 2rem">
+			<a class="title"> Outcome: </a> </br>
+			Establish bicycling as a safe and common transportation method in the United States
+		</div>
+	</section>
+	<section class="mainGrid">
+		<ul class="list" id="whatList"> 
+			<!-- <li class="title"> Strategies: </li> -->
+		</ul>
+		<ul id="howList"> 
+			<!-- <li class="title"> Approaches: </li> -->
+		</ul>
+		<ul id="effortList"> 
+			<!-- <li class="title"> Efforts: </li> -->
+		</ul>
+		<ul id="mediaList"> 
+			<!-- <li class="title"> Media: </li> -->
+		</ul>
+	</section>
 	<div id="accordion" style="width: 50%; height: 500px; ">
 		<h3>Add a new approach</h3>
 		<div style="width: 100%; height: 500px;">
@@ -118,6 +149,12 @@ base('What').select({
 }).firstPage(function(err, records) {
     if (err) { console.error(err); return; }
     createTitle("Strategies:","whatList");
+    createTitle("Approaches:","howList");
+    createFiller("Click on a strategy to see approaches","howList")
+    createTitle("Efforts:","effortList");
+    createFiller("Select a strategy and an approach to see efforts","effortList")
+    createTitle("Media:","mediaList");
+    createFiller("Select a strategy and an approach to see media","mediaList")
     records.forEach(function(record) {
         var what = record.get('What to do')
         var listPart = document.createElement("li");
@@ -137,6 +174,11 @@ function showHows(what) {
     document.getElementById("howList").textContent = ''
     document.getElementById("effortList").textContent = ''
     document.getElementById("mediaList").textContent = ''
+    createTitle("Approaches:","howList");
+    createTitle("Efforts:","effortList");
+    createFiller("Select an approach to see efforts","effortList")
+    createTitle("Media:","mediaList");
+    createFiller("Select an approach to see media","mediaList")
     var filterFormula = "AND( SEARCH('" + what + "',{What}) > 0, {Reviewed} = 'Yes')"
     base('How').select({
         view: 'Grid view',
@@ -144,7 +186,7 @@ function showHows(what) {
 
     }).firstPage(function(err, records) {
         if (err) { console.error(err); return; }
-    createTitle("Approaches:","howList");
+	    // createTitle("Approaches:","howList");
         records.forEach(function(record) {
             var how = record.get('How')
             var listPart = document.createElement("li");
@@ -164,13 +206,14 @@ function showHows(what) {
 
 function showEfforts(how) {
     document.getElementById("effortList").textContent = ''
+    createTitle("Efforts:","effortList");
     var filterFormula = "AND(SEARCH('"+ how + "',{How}) > 0, {Reviewed} = 'Yes')"
     base('Efforts').select({
         view: 'Grid view',
         filterByFormula: filterFormula
     }).firstPage(function(err, records) {
         if (err) { console.error(err); return; }
-        createTitle("Efforts:","effortList");
+        // createTitle("Efforts:","effortList");
         records.forEach(function(record) {
             var effort = record.get('Effort')
             var url = record.get('URL')
@@ -185,13 +228,14 @@ function showEfforts(how) {
 }
 function showMedia(how) {
     document.getElementById("mediaList").textContent = ''
+    createTitle("Media:","mediaList");
     var filterFormula = "AND( SEARCH('"+ how + "',{How}) > 0, {Reviewed} = 'Yes')"
     base('Media').select({
         view: 'Grid view',
         filterByFormula: filterFormula
     }).firstPage(function(err, records) {
         if (err) { console.error(err); return; }
-        createTitle("Media:","mediaList");
+        // createTitle("Media:","mediaList");
         records.forEach(function(record) {
             var media = record.get('Media')
             var url = record.get('URL')
@@ -210,6 +254,14 @@ function createTitle(title,list) {
     var textNode = document.createTextNode(title);
     listPart.appendChild(textNode);
     listPart.classList.add('title');
+    document.getElementById(list).appendChild(listPart);
+}
+
+function createFiller(filler,list) {
+    var listPart = document.createElement("li");
+    var textNode = document.createTextNode(filler);
+    listPart.appendChild(textNode);
+    listPart.classList.add('filler');
     document.getElementById(list).appendChild(listPart);
 }
 

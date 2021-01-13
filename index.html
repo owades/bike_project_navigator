@@ -15,6 +15,7 @@
 		}
 		.title {
 		    font-weight: bold;
+		    color: black;
 		}
 		#overlay {
 			position: fixed; /* Sit on top of the page content */
@@ -220,7 +221,7 @@ function toggleSelection(listItem) {
 	// remove "selected" class from all list items
 	Array.from(selectedElement).forEach(item => item.classList.remove('selected')) 
 	// add "notSelected" class to all list items
-	Array.from(notSelectedElements).forEach(item => item.classList.add('notSelected'))  
+	Array.from(notSelectedElements).forEach(item => item.classList.add('notSelected'))
 	// remove "notSelected" class from the clicked item
 	listItem.classList.remove('notSelected');
 	// add "selected" class to the clicked item

@@ -39,8 +39,6 @@
     		margin-right: auto;
     		font-size: 2vw;
     		padding: 50px;
-
-
 		}
 	</style>
 </head>
@@ -93,7 +91,6 @@
 		</div>
 	 </div>
 
-
 	<div id="overlay" onclick="overlayOff()">
 		<div id="overlayText">
 		This tool is my attempt to understand and sort the landscape of people, organizations and businesses who are working to increase bicycle ridership in the US. I hope you will find it useful, and that you might provide feedback and input to make it better.
@@ -113,7 +110,7 @@
 
 var Airtable = require('airtable');
 // This is a read-only API key...don't get excited
-var base = new Airtable({apiKey: 'keytg2DL8nfcAyl338'}).base('appVtB7KozrwvMKQm');
+var base = new Airtable({apiKey: 'keyt2DL8nfcAyl338'}).base('appVtB7KozrwvMKQm');
 
 base('What').select({
     view: 'Grid view'
@@ -245,12 +242,10 @@ $(function() {
         active: false,
         animate: {        
             duration: 200,        
-            
         },
          beforeActivate: function( event, ui ) {
          		showIframe(ui.newPanel);
          } 
-        
     });  
 }); 
 

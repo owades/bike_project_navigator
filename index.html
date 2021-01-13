@@ -144,7 +144,7 @@ function showHows(what) {
     document.getElementById("howList").textContent = ''
     document.getElementById("effortList").textContent = ''
     document.getElementById("mediaList").textContent = ''
-    var filterFormula = "AND( {What} = '" + what + "', {Reviewed} = 'Yes')"
+    var filterFormula = "AND( SEARCH('" + what + "',{What}) > 0, {Reviewed} = 'Yes')"
     base('How').select({
         view: 'Grid view',
         filterByFormula: filterFormula

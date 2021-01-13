@@ -77,26 +77,31 @@
 		}
 		/* main grid styles */
 		.mainGrid {
-		  /*padding: 2rem;*/
   		  display: grid;
+		  margin: 2rem auto;
 		  grid-template-columns: repeat(2, minmax(0, 1fr));
+
+			border: 1px solid #000
 		  /*grid-gap: 1rem;*/
 		}
-
-		.mainGrid > ul {
-			text-align: center;
+		.mainGrid > .gridContainer {
+			display: grid;
+			border: 1px solid #000;
+			grid-gap: 1px;
+			justify-self: center; 
+			width: 100%;
+			height: auto;
+			margin: 0 auto;
+		}
+		.mainGrid > .gridContainer > ul {
+			  position: relative;
 			list-style-type: none;
 			display: inline-block; 
 			font-size: 2rem;
-			vertical-align: top;
-
+			grid-gap: 1px;
 		}
-		.mainGrid > ul > li {
-			
+		.mainGrid > ul > li {	
 			text-align: left;
-		}
-		iframe {
-
 		}
 	</style>
 </head>
@@ -115,18 +120,26 @@
 		</div>
 	</section>
 	<section class="mainGrid">
-		<ul class="list" id="whatList"> 
-			<!-- <li class="title"> Strategies: </li> -->
-		</ul>
-		<ul id="howList"> 
-			<!-- <li class="title"> Approaches: </li> -->
-		</ul>
-		<ul id="effortList"> 
-			<!-- <li class="title"> Efforts: </li> -->
-		</ul>
-		<ul id="mediaList"> 
-			<!-- <li class="title"> Media: </li> -->
-		</ul>
+		<div class='gridContainer'>
+			<ul class="list" id="whatList"> 
+				<!-- <li class="title"> Strategies: </li> -->
+			</ul>
+		</div>
+		<div class='gridContainer'>
+			<ul id="howList"> 
+				<!-- <li class="title"> Approaches: </li> -->
+			</ul>
+		</div>
+		<div class='gridContainer'>
+			<ul id="effortList"> 
+				<!-- <li class="title"> Efforts: </li> -->
+			</ul>
+		</div>
+		<div class='gridContainer'>
+			<ul id="mediaList"> 
+				<!-- <li class="title"> Media: </li> -->
+			</ul>
+		</div>
 	</section>
 	<div id="accordion" style="width: 50%; height: 500px; ">
 		<h3>Add a new approach</h3>

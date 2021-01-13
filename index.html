@@ -20,6 +20,30 @@
 		.filler {
 		    font-style: italic;
 		}
+		.listTitle {
+			font-weight: bold;
+			/*position: relative;*/
+			/*display: inline-block;*/
+			/*border-bottom: 1px dotted black;*/
+		}
+		.tooltipText {
+			visibility: hidden;
+			width: 300px;
+			background-color: white;
+			color: black;
+			font-size: 1rem;
+			font-style: normal;
+			border-radius: 6px;
+			padding: 10px;
+
+			/* Position the tooltip */
+			position: absolute;
+			z-index: 1;
+		}
+		.listTitle:hover .tooltipText {
+		  visibility: visible;
+		}
+
 		#overlay {
 			position: fixed; /* Sit on top of the page content */
 			display: none; /* Hidden by default */
@@ -79,10 +103,12 @@
 
 <body>
 	<section class="top">
-		<div style="font-size: 2rem">
+		<div style="font-size: 3rem">
 			<a class="title"> Bike project navigator</a>
 		</div>	
 		<button onclick="overlayOn()">What is this?</button>
+		</br>
+		</br>
 		<div style="font-size: 2rem">
 			<a class="title"> Outcome: </a> </br>
 			Establish bicycling as a safe and common transportation method in the United States
@@ -143,17 +169,21 @@
 var Airtable = require('airtable');
 // This is a read-only API key...don't get excited
 var base = new Airtable({apiKey: 'keyt2DL8nfcAyl338'}).base('appVtB7KozrwvMKQm');
+var strategiesTooltip = "High-level strategies for increasing bicycle ridership"
+var approachesTooltip = "Specific ways to acheive a strategy"
+var effortsTooltip = "Real-world efforts that are currently working to increase bicycle ridership"
+var mediaTooltip = "Media coverage of efforts or strategies for increasing bicycle ridership"
 
 base('What').select({
     view: 'Grid view'
 }).firstPage(function(err, records) {
     if (err) { console.error(err); return; }
-    createTitle("Strategies:","whatList");
-    createTitle("Approaches:","howList");
+    createTitle("Strategies: ⓘ","whatList",strategiesTooltip);
+    createTitle("Approaches: ⓘ","howList",approachesTooltip);
     createFiller("Click on a strategy to see approaches","howList")
-    createTitle("Efforts:","effortList");
+    createTitle("Efforts: ⓘ","effortList",effortsTooltip);
     createFiller("Select a strategy and an approach to see efforts","effortList")
-    createTitle("Media:","mediaList");
+    createTitle("Media: ⓘ","mediaList",mediaTooltip);
     createFiller("Select a strategy and an approach to see media","mediaList")
     records.forEach(function(record) {
         var what = record.get('What to do')
@@ -174,10 +204,10 @@ function showHows(what) {
     document.getElementById("howList").textContent = ''
     document.getElementById("effortList").textContent = ''
     document.getElementById("mediaList").textContent = ''
-    createTitle("Approaches:","howList");
-    createTitle("Efforts:","effortList");
+    createTitle("Approaches: ⓘ","howList",approachesTooltip);
+    createTitle("Efforts: ⓘ","effortList",effortsTooltip);
     createFiller("Select an approach to see efforts","effortList")
-    createTitle("Media:","mediaList");
+    createTitle("Media: ⓘ","mediaList",mediaTooltip);
     createFiller("Select an approach to see media","mediaList")
     var filterFormula = "AND( SEARCH('" + what + "',{What}) > 0, {Reviewed} = 'Yes')"
     base('How').select({
@@ -186,7 +216,6 @@ function showHows(what) {
 
     }).firstPage(function(err, records) {
         if (err) { console.error(err); return; }
-	    // createTitle("Approaches:","howList");
         records.forEach(function(record) {
             var how = record.get('How')
             var listPart = document.createElement("li");
@@ -206,14 +235,13 @@ function showHows(what) {
 
 function showEfforts(how) {
     document.getElementById("effortList").textContent = ''
-    createTitle("Efforts:","effortList");
+    createTitle("Efforts: ⓘ","effortList",effortsTooltip);
     var filterFormula = "AND(SEARCH('"+ how + "',{How}) > 0, {Reviewed} = 'Yes')"
     base('Efforts').select({
         view: 'Grid view',
         filterByFormula: filterFormula
     }).firstPage(function(err, records) {
         if (err) { console.error(err); return; }
-        // createTitle("Efforts:","effortList");
         records.forEach(function(record) {
             var effort = record.get('Effort')
             var url = record.get('URL')
@@ -228,14 +256,13 @@ function showEfforts(how) {
 }
 function showMedia(how) {
     document.getElementById("mediaList").textContent = ''
-    createTitle("Media:","mediaList");
+    createTitle("Media: ⓘ","mediaList",mediaTooltip);
     var filterFormula = "AND( SEARCH('"+ how + "',{How}) > 0, {Reviewed} = 'Yes')"
     base('Media').select({
         view: 'Grid view',
         filterByFormula: filterFormula
     }).firstPage(function(err, records) {
         if (err) { console.error(err); return; }
-        // createTitle("Media:","mediaList");
         records.forEach(function(record) {
             var media = record.get('Media')
             var url = record.get('URL')
@@ -249,11 +276,16 @@ function showMedia(how) {
     });
 }
 
-function createTitle(title,list) {
+function createTitle(title,list,tooltipText) {
     var listPart = document.createElement("li");
     var textNode = document.createTextNode(title);
+    var tooltipSpan = document.createElement("span");
+    var tooltipTextNode = document.createTextNode(tooltipText);
+    tooltipSpan.appendChild(tooltipTextNode);
+    tooltipSpan.classList.add('tooltipText')
     listPart.appendChild(textNode);
-    listPart.classList.add('title');
+    listPart.appendChild(tooltipSpan);
+    listPart.classList.add('listTitle');
     document.getElementById(list).appendChild(listPart);
 }
 

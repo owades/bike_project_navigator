@@ -113,7 +113,7 @@
 
 var Airtable = require('airtable');
 // This is a read-only API key...don't get excited
-var base = new Airtable({apiKey: 'keyt2DL8nfcAyl338'}).base('appVtB7KozrwvMKQm');
+var base = new Airtable({apiKey: 'keytg2DL8nfcAyl338'}).base('appVtB7KozrwvMKQm');
 
 base('What').select({
     view: 'Grid view'
@@ -233,7 +233,7 @@ function showIframe(panel){
 };
 
 $(function() {
-    //I believe these two functions will load all
+    //Load all 4 airtable forms
 	showIframe( $('#accordion div').eq(0) );
 	showIframe( $('#accordion div').eq(1) );
 	showIframe( $('#accordion div').eq(2) );

@@ -7,6 +7,10 @@
 	<link rel="stylesheet" href="https://ajax.googleapis.com/ajax/libs/jqueryui/1.12.1/themes/smoothness/jquery-ui.css">
 	<script src="https://ajax.googleapis.com/ajax/libs/jqueryui/1.12.1/jquery-ui.min.js"></script>
 	<style>
+		body {
+			margin: 0;
+			padding: 0;
+		}
 		.selected {
 		    color: black;
 		    border: 1px solid #000;
@@ -71,19 +75,19 @@
 		/* main grid styles */
 		.mainGrid {
   			display: grid;
-			margin: 2rem auto;
-			grid-template-columns: repeat(2, minmax(0px, 1fr));
-			border: 1px solid #000
-		  /*grid-gap: 1rem;*/
+			grid-template-columns: repeat(auto-fit, minmax(500px, 1fr));
+			/*Can't say I understand this perfectly but the idea is to stop it from increasing columns to 3*/
+			max-width: 1499px;
+
+		  
 		}
 		.mainGrid > .gridContainer {
 			display: grid;
 			/*border: 1px solid #000;*/
-			grid-gap: 1px;
+			/*grid-gap: 1px;*/
 			justify-self: center; 
 			width: 100%;
 			height: auto;
-			margin: 0 auto;
 		}
 		.mainGrid > .gridContainer > ul {
 			position: relative;

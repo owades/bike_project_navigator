@@ -357,5 +357,25 @@ function overlayOff() {
   document.getElementById("overlay").style.display = "none";
 }
 
+// creates an array of unique locations from the efforts tab
+$(function() {
+	var locations = [];
+	base('Efforts').select({
+	view: 'Grid view',
+	}).firstPage(function(err, records) {
+		if (err) { console.error(err); return; }
+			records.forEach(function(record) {
+		    	locations.push(record.get('Location'));
+			});
+		let uniqueLocations = [];
+		locations.forEach((l) => {
+							    if (!uniqueLocations.includes(l)) {
+								        uniqueLocations.push(l);
+								}
+							});
+		console.log(uniqueLocations);
+	});
+});
+
 </script>
 </html>

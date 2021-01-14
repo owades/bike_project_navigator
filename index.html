@@ -138,6 +138,13 @@
 			</ul>
 		</div>
 	</section>
+	<form>
+  		<label for="cities">Select a location to filter Efforts & Media:</label>
+		<select id="locationOptions" name="locationOptions">
+		</select>
+		<button type='button' id="filterButton"> Filter Location </button>
+	</form>
+
 	<div id="accordion" style="width: 100%; height: 500px; ">
 		<h3>Add a new approach</h3>
 		<div style="width: 100%; height: 500px;">
@@ -183,6 +190,8 @@ var strategiesTooltip = "High-level strategies for increasing bicycle ridership"
 var approachesTooltip = "Specific ways to acheive a strategy"
 var effortsTooltip = "Real-world efforts that are currently working to increase bicycle ridership"
 var mediaTooltip = "Media coverage of efforts or strategies for increasing bicycle ridership"
+var selectedWhat;
+var selectedHow;
 
 base('What').select({
     view: 'Grid view'
@@ -202,6 +211,8 @@ base('What').select({
             return function(){
                 showHows(what);
                 toggleSelection(this);
+                selectedWhat = what;
+                selectedHow = null;
             }
         }(what);
         listPart.innerHTML = what + " <br>"
@@ -233,6 +244,7 @@ function showHows(what) {
                     showEfforts(how);
                     showMedia(how);
                     toggleSelection(this);
+                    selectedHow = how;
                 }
             }(how);
         	listPart.innerHTML = how + " <br>"
@@ -241,10 +253,15 @@ function showHows(what) {
     });
 }
 
-function showEfforts(how) {
+function showEfforts(how,location = 'all') {
     document.getElementById("effortList").textContent = ''
     createTitle("Efforts: ⓘ","effortList",effortsTooltip);
-    var filterFormula = "AND(SEARCH('"+ how + "',{How}) > 0, {Reviewed} = 'Yes')"
+    if(location != 'all') {
+    	var filterFormula = "AND(SEARCH('"+ how + "',{How}) > 0, {Reviewed} = 'Yes', {Location} = '" + location + "')";
+    } else {
+    	var filterFormula = "AND( SEARCH('"+ how + "',{How}) > 0, {Reviewed} = 'Yes')";
+    }
+    
     base('Efforts').select({
         view: 'Grid view',
         filterByFormula: filterFormula
@@ -262,10 +279,14 @@ function showEfforts(how) {
         });
     });
 }
-function showMedia(how) {
+function showMedia(how,location = 'all') {
     document.getElementById("mediaList").textContent = ''
     createTitle("Media: ⓘ","mediaList",mediaTooltip);
-    var filterFormula = "AND( SEARCH('"+ how + "',{How}) > 0, {Reviewed} = 'Yes')"
+    if(location != 'all') {
+    	var filterFormula = "AND(SEARCH('"+ how + "',{How}) > 0, {Reviewed} = 'Yes', {Location} = '" + location + "')";
+    } else {
+    	var filterFormula = "AND( SEARCH('"+ how + "',{How}) > 0, {Reviewed} = 'Yes')";
+    }
     base('Media').select({
         view: 'Grid view',
         filterByFormula: filterFormula
@@ -369,13 +390,25 @@ $(function() {
 			});
 		let uniqueLocations = [];
 		locations.forEach((l) => {
-							    if (!uniqueLocations.includes(l)) {
-								        uniqueLocations.push(l);
-								}
-							});
-		console.log(uniqueLocations);
+			if (!uniqueLocations.includes(l)) {
+		        uniqueLocations.push(l);      
+			}
+		});
+		uniqueLocations.forEach((l) => {
+			var city = document.createElement("option");
+			city.innerHTML = l;
+			city.setAttribute("value",l);
+			document.getElementById("locationOptions").appendChild(city);
+		});
 	});
 });
+const button = document.getElementById("filterButton");
+button.addEventListener('click', event => {
+	var dropdown = document.getElementById("locationOptions");
+	selectedLocation = dropdown.options[dropdown.selectedIndex].value;
+	showEfforts(selectedHow, selectedLocation);
+	showMedia(selectedHow, selectedLocation);
+})
 
 </script>
 </html>

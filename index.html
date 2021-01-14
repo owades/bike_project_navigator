@@ -9,9 +9,10 @@
 	<style>
 		.selected {
 		    color: black;
+		    border: 1px solid #000;
 		}
 		.notSelected {
-		    color: grey;
+		    /*color: grey;*/
 		}
 		.title {
 		    font-weight: bold;
@@ -23,9 +24,6 @@
 		.listTitle {
 			font-weight: bold;
 		    color: black;
-			/*position: relative;*/
-			/*display: inline-block;*/
-			/*border-bottom: 1px dotted black;*/
 		}
 		.tooltipText {
 			visibility: hidden;
@@ -60,7 +58,7 @@
 
 		}
 		#overlayText {
-			background-color: white;
+			background-color: rgba(255,255,255, 0.8);
 			width: 60%; /* Full width (cover the whole page) */
 			height: 60%; /* Full height (cover the whole page) */
  			margin-left: auto;
@@ -69,18 +67,11 @@
     		padding: 50px;
 		}
 
-		.top {
-			/* Grid styles */
-			/*display: grid;
-			align-items: center;
-			grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));*/
-		}
 		/* main grid styles */
 		.mainGrid {
-  		  display: grid;
-		  margin: 2rem auto;
-		  grid-template-columns: repeat(2, minmax(0, 1fr));
-
+  			display: grid;
+			margin: 2rem auto;
+			grid-template-columns: repeat(2, minmax(0, 1fr));
 			border: 1px solid #000
 		  /*grid-gap: 1rem;*/
 		}
@@ -94,14 +85,16 @@
 			margin: 0 auto;
 		}
 		.mainGrid > .gridContainer > ul {
-			  position: relative;
+			position: relative;
 			list-style-type: none;
 			display: inline-block; 
 			font-size: 2rem;
 			grid-gap: 1px;
 		}
-		.mainGrid > ul > li {	
+		.list > li {	
 			text-align: left;
+			display: inline;
+			/*background-color: black;*/
 		}
 	</style>
 </head>
@@ -112,10 +105,10 @@
 			<a class="title"> Bike project navigator</a>
 		</div>	
 		<button onclick="overlayOn()">What is this?</button>
-		</br>
-		</br>
+		<br>
+		<br>
 		<div style="font-size: 2rem">
-			<a class="title"> Outcome: </a> </br>
+			<a class="title"> Outcome: </a> <br>
 			Establish bicycling as a safe and common transportation method in the United States
 		</div>
 	</section>
@@ -126,17 +119,17 @@
 			</ul>
 		</div>
 		<div class='gridContainer' style="background-color: #8FC0A9;">
-			<ul id="howList"> 
+			<ul class="list" id="howList"> 
 				<!-- <li class="title"> Approaches: </li> -->
 			</ul>
 		</div>
 		<div class='gridContainer' style="background-color: #C8D5B9;">
-			<ul id="effortList"> 
+			<ul class="list" id="effortList"> 
 				<!-- <li class="title"> Efforts: </li> -->
 			</ul>
 		</div>
 		<div class='gridContainer' style="background-color: #FAF3DD;">
-			<ul id="mediaList"> 
+			<ul class="list" id="mediaList"> 
 				<!-- <li class="title"> Media: </li> -->
 			</ul>
 		</div>
@@ -165,7 +158,7 @@
 	<div id="overlay" onclick="overlayOff()">
 		<div id="overlayText">
 		This tool is my attempt to understand and sort the landscape of people, organizations and businesses who are working to increase bicycle ridership in the US. I hope you will find it useful, and that you might provide feedback and input to make it better.
-		</br> </br>
+		<br> <br>
 		I've sorted work into high-level categories called "Strategies", followed by more specific categories called "Approaches". When you click on each, you will see a "zoomed in" view of the specific efforts that are being done, and related media coverage. If the way I have organized information doesn't feel quite right, please fill out the feedback form to let me know!
 		</div>
 	</div>
@@ -207,8 +200,7 @@ base('What').select({
                 toggleSelection(this);
             }
         }(what);
-        var textNode = document.createTextNode(what);
-        listPart.appendChild(textNode);
+        listPart.innerHTML = what + " <br>"
         document.getElementById("whatList").appendChild(listPart);
     });
 });
@@ -239,8 +231,7 @@ function showHows(what) {
                     toggleSelection(this);
                 }
             }(how);
-            var textNode = document.createTextNode(how);
-            listPart.appendChild(textNode);
+        	listPart.innerHTML = how + " <br>"
             document.getElementById("howList").appendChild(listPart);
         });
     });
@@ -260,7 +251,7 @@ function showEfforts(how) {
             var url = record.get('URL')
             var listPart = document.createElement("li");
             var a = document.createElement("a");
-            a.textContent = effort;
+            a.innerHTML = effort + "<br>";
             a.setAttribute('href', url);
             listPart.appendChild(a);
             document.getElementById("effortList").appendChild(listPart);
@@ -277,11 +268,11 @@ function showMedia(how) {
     }).firstPage(function(err, records) {
         if (err) { console.error(err); return; }
         records.forEach(function(record) {
-            var media = record.get('Media')
+            var media = record.get('Media') + "<br>"
             var url = record.get('URL')
             var listPart = document.createElement("li");
             var a = document.createElement("a");
-            a.textContent = media;
+            a.innerHTML = media + "<br>";
             a.setAttribute('href', url);
             listPart.appendChild(a);
             document.getElementById("mediaList").appendChild(listPart);
@@ -290,6 +281,7 @@ function showMedia(how) {
 }
 
 function createTitle(title,list,tooltipText) {
+    var br = document.createElement("br");
     var listPart = document.createElement("li");
     var textNode = document.createTextNode(title);
     var tooltipSpan = document.createElement("span");
@@ -300,6 +292,7 @@ function createTitle(title,list,tooltipText) {
     listPart.appendChild(tooltipSpan);
     listPart.classList.add('listTitle');
     document.getElementById(list).appendChild(listPart);
+    document.getElementById(list).appendChild(br);
 }
 
 function createFiller(filler,list) {

@@ -22,6 +22,7 @@
 		.title {
 		    font-weight: bold;
 		    color: black;
+		    font-size: 3rem;
 		}
 		.filler {
 		    font-style: italic;
@@ -72,12 +73,17 @@
     		padding: 50px;
 		}
 
-		/* main grid styles */
+		.top {
+			background-color: #FEF9EF;
+			color: black;
+			text-align: center;
+		}
 		.mainGrid {
   			display: grid;
 			grid-template-columns: repeat(auto-fit, minmax(500px, 1fr));
-			max-width: 1499px;
-			grid-auto-rows: 300px
+			/*max-width: 1499px;*/
+			grid-auto-rows: 1fr
+			/*grid-auto-rows: 300px*/
 			/*Can't say I understand this perfectly but the idea is to stop it from increasing columns to 3*/
 			
 
@@ -100,41 +106,50 @@
 			text-align: left;
 			display: inline;
 		}
+		.image {
+			max-width: 100%;
+			max-height: 100%;
+		}
 	</style>
 </head>
 
 <body>
 	<section class="top">
-		<div style="font-size: 3rem">
-			<a class="title"> Bike project navigator</a>
-		</div>	
+		<br>
+		<a class="title"> Bike project navigator</a>
+		<br>
 		<button onclick="overlayOn()">What is this?</button>
 		<br>
 		<br>
-		<div style="font-size: 2rem">
+<!-- 		<div style="font-size: 2rem">
 			<a class="title"> Outcome: </a> <br>
 			Establish bicycling as a safe and common transportation method in the United States
-		</div>
+		</div> -->
 	</section>
 	<section class="mainGrid">
-		<div class='gridContainer' style="background-color: #68B0AB;">
+		<div class='gridContainer' style="background-color: #B9D2B1;">
+			<ul class="list">
+				<li class="listTitle"> Outcome: </li>
+				<br>
+				<li> Establish bicycling as a safe and common transportation method in the United States </li>
+			</ul>			
+		</div>
+		<div class='gridContainer' style="background-color: #6D9DC5;">
 			<ul class="list" id="whatList"> 
-				<!-- <li class="title"> Strategies: </li> -->
 			</ul>
 		</div>
-		<div class='gridContainer' style="background-color: #8FC0A9;">
+		<div class='gridContainer' style="background-color: #6D9DC5;">
 			<ul class="list" id="howList"> 
-				<!-- <li class="title"> Approaches: </li> -->
 			</ul>
 		</div>
-		<div class='gridContainer' style="background-color: #C8D5B9;">
+		<div class='gridContainer' id='imageContainer' style="background-color: #B9D2B1;">
+		</div>
+		<div class='gridContainer' style="background-color: #DB93B0;">
 			<ul class="list" id="effortList"> 
-				<!-- <li class="title"> Efforts: </li> -->
 			</ul>
 		</div>
-		<div class='gridContainer' style="background-color: #FAF3DD;">
+		<div class='gridContainer' style="background-color: #DB93B0;">
 			<ul class="list" id="mediaList"> 
-				<!-- <li class="title"> Media: </li> -->
 			</ul>
 		</div>
 	</section>
@@ -145,7 +160,6 @@
 		</select>
 		<button type='button' id="filterButton"> Filter Location </button>
 	</form> -->
-	<br>
 	<div id="accordion" style="width: 100%; height: 500px; ">
 		<h3>Add a new approach</h3>
 		<div style="width: 100%; height: 500px;">
@@ -242,8 +256,7 @@ function showHows(what) {
             var listPart = document.createElement("li");
             listPart.onclick = function() {
                 return function(){
-                    showEfforts(how);
-                    showMedia(how);
+                    filterHow(how);
                     toggleSelection(this);
                     selectedHow = how;
                 }
@@ -252,16 +265,22 @@ function showHows(what) {
             document.getElementById("howList").appendChild(listPart);
         });
     });
-}
+};
 
-function showEfforts(how,location = 'all') {
-    document.getElementById("effortList").textContent = ''
+// Some leftover logic in comments, for including location filtering
+function filterHow(how) {
+// function filterHow(how,location = 'all') {
+    document.getElementById("effortList").textContent = '';
     createTitle("Efforts: ⓘ","effortList",effortsTooltip);
-    if(location != 'all') {
-    	var filterFormula = "AND(SEARCH('"+ how + "',{How}) > 0, {Reviewed} = 'Yes', {Location} = '" + location + "')";
-    } else {
+    document.getElementById("mediaList").textContent = '';
+    createTitle("Media: ⓘ","mediaList",mediaTooltip);
+    document.getElementById("imageContainer").textContent = '';
+
+    // if(location != 'all') {
+    // 	var filterFormula = "AND(SEARCH('"+ how + "',{How}) > 0, {Reviewed} = 'Yes', {Location} = '" + location + "')";
+    // } else {
     	var filterFormula = "AND( SEARCH('"+ how + "',{How}) > 0, {Reviewed} = 'Yes')";
-    }
+    // }
     
     base('Efforts').select({
         view: 'Grid view',
@@ -279,15 +298,6 @@ function showEfforts(how,location = 'all') {
             document.getElementById("effortList").appendChild(listPart);
         });
     });
-}
-function showMedia(how,location = 'all') {
-    document.getElementById("mediaList").textContent = ''
-    createTitle("Media: ⓘ","mediaList",mediaTooltip);
-    if(location != 'all') {
-    	var filterFormula = "AND(SEARCH('"+ how + "',{How}) > 0, {Reviewed} = 'Yes', {Location} = '" + location + "')";
-    } else {
-    	var filterFormula = "AND( SEARCH('"+ how + "',{How}) > 0, {Reviewed} = 'Yes')";
-    }
     base('Media').select({
         view: 'Grid view',
         filterByFormula: filterFormula
@@ -304,7 +314,27 @@ function showMedia(how,location = 'all') {
             document.getElementById("mediaList").appendChild(listPart);
         });
     });
-}
+    base('How').select({
+        view: 'Grid view',
+        filterByFormula: filterFormula
+    }).firstPage(function(err, records) {
+        if (err) { console.error(err); return; }
+        records.forEach(function(record) {
+            let images = record.get('Image');
+            let url = images[0].url;
+            let alt = record.get('Image Alt');
+            let source = record.get('Image Source');
+            var imageElement = document.createElement("img");
+            imageElement.setAttribute('src',url);
+            imageElement.setAttribute('alt',alt);
+            imageElement.classList.add('image');
+            document.getElementById("imageContainer").appendChild(imageElement);
+            var sourceText = document.createElement("a");
+            sourceText.innerHTML = "Image source: "+source;
+            document.getElementById("imageContainer").appendChild(sourceText);
+        });
+    });
+};
 
 function createTitle(title,list,tooltipText) {
     var br = document.createElement("br");
@@ -407,8 +437,7 @@ function overlayOff() {
 // button.addEventListener('click', event => {
 // 	var dropdown = document.getElementById("locationOptions");
 // 	selectedLocation = dropdown.options[dropdown.selectedIndex].value;
-// 	showEfforts(selectedHow, selectedLocation);
-// 	showMedia(selectedHow, selectedLocation);
+// 	filterHow(selectedHow, selectedLocation);
 // })
 
 </script>

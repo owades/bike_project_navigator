@@ -138,12 +138,13 @@
 			</ul>
 		</div>
 	</section>
-	<form>
+	<!-- Logic to filter locatiosn is currently disabled -->
+	<!-- <form>
   		<label for="cities">Select a location to filter Efforts & Media:</label>
 		<select id="locationOptions" name="locationOptions">
 		</select>
 		<button type='button' id="filterButton"> Filter Location </button>
-	</form>
+	</form> -->
 	<br>
 	<div id="accordion" style="width: 100%; height: 500px; ">
 		<h3>Add a new approach</h3>
@@ -379,36 +380,36 @@ function overlayOff() {
 }
 
 // creates an array of unique locations from the efforts tab
-$(function() {
-	var locations = [];
-	base('Efforts').select({
-	view: 'Grid view',
-	}).firstPage(function(err, records) {
-		if (err) { console.error(err); return; }
-			records.forEach(function(record) {
-		    	locations.push(record.get('Location'));
-			});
-		let uniqueLocations = [];
-		locations.forEach((l) => {
-			if (!uniqueLocations.includes(l)) {
-		        uniqueLocations.push(l);      
-			}
-		});
-		uniqueLocations.forEach((l) => {
-			var city = document.createElement("option");
-			city.innerHTML = l;
-			city.setAttribute("value",l);
-			document.getElementById("locationOptions").appendChild(city);
-		});
-	});
-});
-const button = document.getElementById("filterButton");
-button.addEventListener('click', event => {
-	var dropdown = document.getElementById("locationOptions");
-	selectedLocation = dropdown.options[dropdown.selectedIndex].value;
-	showEfforts(selectedHow, selectedLocation);
-	showMedia(selectedHow, selectedLocation);
-})
+// $(function() {
+// 	var locations = [];
+// 	base('Efforts').select({
+// 	view: 'Grid view',
+// 	}).firstPage(function(err, records) {
+// 		if (err) { console.error(err); return; }
+// 			records.forEach(function(record) {
+// 		    	locations.push(record.get('Location'));
+// 			});
+// 		let uniqueLocations = [];
+// 		locations.forEach((l) => {
+// 			if (!uniqueLocations.includes(l)) {
+// 		        uniqueLocations.push(l);      
+// 			}
+// 		});
+// 		uniqueLocations.forEach((l) => {
+// 			var city = document.createElement("option");
+// 			city.innerHTML = l;
+// 			city.setAttribute("value",l);
+// 			document.getElementById("locationOptions").appendChild(city);
+// 		});
+// 	});
+// });
+// const button = document.getElementById("filterButton");
+// button.addEventListener('click', event => {
+// 	var dropdown = document.getElementById("locationOptions");
+// 	selectedLocation = dropdown.options[dropdown.selectedIndex].value;
+// 	showEfforts(selectedHow, selectedLocation);
+// 	showMedia(selectedHow, selectedLocation);
+// })
 
 </script>
 </html>

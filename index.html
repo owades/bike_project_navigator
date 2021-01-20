@@ -12,8 +12,9 @@
 			padding: 0;
 		}
 		.selected {
-		    color: black;
-		    border: 1px solid #000;
+		    color: #8338ec;
+		    font-weight: bold;
+		    /*border: 1px solid #000;*/
 
 		}
 		.notSelected {
@@ -72,7 +73,7 @@
 		}
 
 		.top {
-			background-color: #FEF9EF;
+			background-color: #909090;
 			color: black;
 			text-align: center;
 		}
@@ -106,7 +107,6 @@
 		}
 		.image {
 			max-width: 100%;
-			max-height: 100%;
 		}
 	</style>
 </head>
@@ -119,34 +119,25 @@
 		<button onclick="overlayOn()">What is this?</button>
 		<br>
 		<br>
-<!-- 		<div style="font-size: 2rem">
-			<a class="title"> Outcome: </a> <br>
-			Establish bicycling as a safe and common transportation method in the United States
-		</div> -->
 	</section>
 	<section class="mainGrid">
-		<div class='gridContainer' style="background-color: #B9D2B1;">
-			<ul class="list">
-				<li class="listTitle"> Outcome: </li>
-				<br>
-				<li> Establish bicycling as a safe and common transportation method in the United States </li>
-			</ul>			
-		</div>
-		<div class='gridContainer' style="background-color: #6D9DC5;">
+		<div class='gridContainer' style="background-color: #E8E8E8;">
 			<ul class="list" id="whatList"> 
 			</ul>
 		</div>
-		<div class='gridContainer' style="background-color: #6D9DC5;">
+		<div class='gridContainer' style="background-color: #C8C8C8;">
 			<ul class="list" id="howList"> 
 			</ul>
 		</div>
-		<div class='gridContainer' id='imageContainer' style="background-color: #B9D2B1;">
+		<div class='gridContainer' id='imageContainer' style="background-color: #E8E8E8;">
 		</div>
-		<div class='gridContainer' style="background-color: #DB93B0;">
+	</section>
+	<section class="mainGrid">
+		<div class='gridContainer' style="background-color: white;">
 			<ul class="list" id="effortList"> 
 			</ul>
 		</div>
-		<div class='gridContainer' style="background-color: #DB93B0;">
+		<div class='gridContainer' style="background-color: white;">
 			<ul class="list" id="mediaList"> 
 			</ul>
 		</div>
@@ -183,7 +174,7 @@
 		<div id="overlayText">
 		This tool is my attempt to understand and sort the landscape of people, organizations and businesses who are working to increase bicycle ridership in the US. I hope you will find it useful, and that you might provide feedback and input to make it better.
 		<br> <br>
-		I've sorted work into high-level categories called "Strategies", followed by more specific categories called "Approaches". When you click on each, you will see a "zoomed in" view of the specific efforts that are being done, and related media coverage. If the way I have organized information doesn't feel quite right, please fill out the feedback form to let me know!
+		I've sorted work into high-level categories called "Strategies", followed by more specific categories called "Approaches". When you click on each, you will some examples of efforts being done in this area, and related media coverage. If the way I have organized information doesn't feel quite right, please submit feedback to let me know!
 		</div>
 	</div>
 	
@@ -199,8 +190,8 @@
 var Airtable = require('airtable');
 // This is a read-only API key...don't get excited
 var base = new Airtable({apiKey: 'keyt2DL8nfcAyl338'}).base('appVtB7KozrwvMKQm');
-var strategiesTooltip = "High-level strategies for increasing bicycle ridership"
-var approachesTooltip = "Specific ways to acheive a strategy"
+var strategiesTooltip = "High-level strategies for increasing bicycle ridership. Click on one!"
+var approachesTooltip = "Specific ways to acheive a strategy. Click on one!"
 var effortsTooltip = "Real-world efforts that are currently working to increase bicycle ridership"
 var mediaTooltip = "Media coverage of efforts or strategies for increasing bicycle ridership"
 var selectedWhat;
@@ -237,6 +228,7 @@ function showHows(what) {
     document.getElementById("howList").textContent = ''
     document.getElementById("effortList").textContent = ''
     document.getElementById("mediaList").textContent = ''
+    document.getElementById("imageContainer").textContent = '';
     createTitle("Approaches: ⓘ","howList",approachesTooltip);
     createTitle("Efforts: ⓘ","effortList",effortsTooltip);
     createFiller("Select an approach to see efforts","effortList")
